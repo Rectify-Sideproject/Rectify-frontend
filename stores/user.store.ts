@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useUserStore = defineStoren3('userStore', {
+export const useUserStore = defineStore('userStore', {
     state: () => ({
         id: null as string | null,
         access_token: null as string | null,
