@@ -2,12 +2,12 @@ import { defineStore } from 'pinia'
 
 export const useSongStore = defineStore('SongStore', {
     state: () => ({
-        thumbnail: '' as string | null,
-        owner: '' as string | null,
-        title: '' as string | null,
-        duration: '' as string | null,
-        track_id: '' as string | null,
-        artists: [] as Array<[]>,
+        thumbnail: null as string | null,
+        owner: null as string | null,
+        title: null as string | null,
+        duration: null as string | null,
+        track_id: null as string | null,
+        artists: null as Array<[]> | null,
     }),
     persist: true,
     actions: {
@@ -24,7 +24,7 @@ export const useSongStore = defineStore('SongStore', {
             this.owner = null
             this.duration = null
             this.track_id = null
-            this.artists = []
+            this.artists = null
         }
     }
 })

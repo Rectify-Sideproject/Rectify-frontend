@@ -11,7 +11,6 @@
 <style lang="scss" scoped>
 .load-icon {
     display: flex;
-    width: 100%;
 }
 .loader {
   width: 16px;
