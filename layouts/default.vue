@@ -2,6 +2,7 @@
 import { useUserStore } from '../stores/user.store';
 import { useSongStore } from '../stores/song.store'
 import { useRouter, useRoute } from 'vue-router'
+import { ref } from 'vue'
 
 
 const userstore = useUserStore()
@@ -15,17 +16,25 @@ if (isAuthenticated) {
     user_name = userstore.spotify_display_name as string
 }
 
+var load = ref(false)
+
 const spotifyLogin = async () => {
+    load.value = true
     try {
         const response = await fetch(`${config.public.SPOTIFY_LOGIN_ENDPOINT}`)
-        const data = await response.json()
-        const auth_url = data.auth_url
-        window.location.href = auth_url.replace(
-            'https://rectify-ebon.vercel.app/callback/',
-            'https://rectify-ebon.vercel.app/callback'
-        )
+        if (response.ok) {
+            const data = await response.json()
+            const auth_url = data.auth_url
+            window.location.href = auth_url.replace(
+                'https://rectify-ebon.vercel.app/callback/',
+                'https://rectify-ebon.vercel.app/callback'
+            )
+            load.value = false
+        }
+        load.value = false
     } catch(error) {
         console.error(error)
+        load.value = false
     }
 }
 
@@ -57,7 +66,8 @@ const logout = async () => {
             </div>
             <div class="sign-in">
                 <button class="grn-btn mobile-nav-btn" @click="spotifyLogin" v-if="!isAuthenticated">
-                    <span>Sign in with spotify</span>
+                    <span v-if="load == false">Sign in with spotify</span>
+                    <Load v-if="load == true"/>
                 </button>
                 <button class="grn-btn-lgt" @click="logout" v-else>
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 22 22" stroke-width="1.5" stroke="#04D04D" class="w-6 h-6">
