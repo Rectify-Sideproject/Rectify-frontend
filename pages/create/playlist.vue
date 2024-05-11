@@ -137,11 +137,11 @@ const createPlaylist = async () => {
         </div>
         <div class="create-add-buttons">
             <button @click="createPlaylist" class="grn-btn mobile-btn">
-                <span>Create</span>
+                <span v-if="playlist_load == false">Create</span>
+                <Load v-if="playlist_load == true" />
             </button>
             <button class="grn-btn mobile-btn-hidden" v-if="playlist_added === true">
-                <span v-if="playlist_load == false">Add to playlist</span>
-                <Load v-if="playlist_load == true" />
+                <span>Add to playlist</span>
             </button>
         </div>
         <div class="created-playlist">
