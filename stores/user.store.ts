@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 
-export const useUserStore = defineStore('userStore', {
+export const useUserStore = defineStoren3('userStore', {
     state: () => ({
-        id: '' as string | null,
-        access_token: '' as string | null,
-        spotify_display_name: '' as String | null,
+        id: null as string | null,
+        access_token: null as string | null,
+        spotify_display_name: null as String | null,
     }),
     persist: true,
     actions: {
