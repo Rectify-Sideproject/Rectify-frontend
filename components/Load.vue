@@ -3,12 +3,16 @@
 </script>
 
 <template>
-  <div>
+  <div class="load-icon">
     <span class="loader"></span>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.load-icon {
+    display: flex;
+    width: 100%;
+}
 .loader {
   width: 16px;
   height: 16px;
