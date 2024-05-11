@@ -20,11 +20,11 @@ const spotifyLogin = async () => {
             const data = await response.json()
             const auth_url = data.auth_url
             window.location.href = auth_url.replace(
-                'https://rectify-ebon.vercel.app/callback/',
-                'https://rectify-ebon.vercel.app/callback'
+                'https://rectify-frontend.vercel.app/callback/',
+                'https://rectify-frontend.vercel.app/callback'
             )
-            load.value = false
         }
+        load.value = false
     } catch(error) {
         console.error(error)
         load.value = false

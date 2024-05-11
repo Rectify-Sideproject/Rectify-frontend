@@ -38,6 +38,7 @@ const searchSong = async () => {
         if (response.ok) {
             const data = await response.json()
             const data_det = data.Song_details
+            songStore.removeSongDetails()
             songStore.setSongDetails(data_det.thumbnail, data_det.owner, data_det.title, data_det.duration, data_det.track_id, data_det.artists)
             searched_song.song = ''
         }
@@ -49,9 +50,11 @@ const searchSong = async () => {
 const getCurrentSong = async () => {
     try {
         const response = await fetch(`${config.public.CURRENT_SONG_ENDPOINT}`)
-        const data = await response.json()
-        const data_det = data.Song_details
-        songStore.setSongDetails(data_det.thumbnail, data_det.owner, data_det.title, data_det.duration, data_det.track_id, data_det.artists)
+        if (response.ok) {
+            const data = await response.json()
+            const data_det = data.Song_details
+            songStore.setSongDetails(data_det.thumbnail, data_det.owner, data_det.title, data_det.duration, data_det.track_id, data_det.artists)
+        }
     }catch (error) {
         console.error(error)
     }
@@ -102,9 +105,12 @@ const createPlaylist = async () => {
                 </div>
                 <input type="text" placeholder="Search" v-model="searched_song.song" @keyup.enter="searchSong">
             </div>
-            <button @click="getCurrentSong" class="grn-btn mobile-btn">
-                <span>Use current song</span>
+            <button @click="searchSong" class="grn-btn mobile-btn">
+                <span>Search song</span>
             </button>
+            <!--<button @click="getCurrentSong" class="grn-btn mobile-btn">
+                <span>Use current song</span>
+            </button>-->
         </div>
         <div class="song-layout-container">
             <SongsLayout v-if="song_checked"

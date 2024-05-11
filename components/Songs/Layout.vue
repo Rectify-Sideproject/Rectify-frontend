@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { useSongStore } from '../../stores/song.store'
+import { ref } from 'vue'
+
+const songstore = useSongStore()
 
 const props = defineProps({
     thumbnail: {
@@ -31,16 +34,16 @@ const props = defineProps({
 
 const formattedTitleNames = computed(() => {
     const maxLength = 10
-    return title.length > maxLength
-      ? `${title.slice(0, maxLength)}...`
-      : title
+    return props.title.length > maxLength
+      ? `${props.title.slice(0, maxLength)}...`
+      : props.title
 })
 
 const formattedOwnerNames = computed(() => {
     const maxLength = 7
-    return owner.length > maxLength
-      ? `${owner.slice(0, maxLength)}...`
-      : owner
+    return props.owner.length > maxLength
+      ? `${props.owner.slice(0, maxLength)}...`
+      : props.owner
 })
 
 
@@ -61,9 +64,7 @@ const formattedArtistNames = computed(() => {
   }
 })
 
-
-
-const { thumbnail, title, artists, duration, owner } = props;
+//const { thumbnail, title, artists, duration, owner } = props;
 </script>
 
 <template>
