@@ -9,11 +9,15 @@ const config = useRuntimeConfig()
 
 const access_token = userStore.access_token
 
+//@keyup.enter="searchSong"
+
 const thumbnail = computed(() => songStore.thumbnail)
 const owner = computed(() => songStore.owner)
 const duration = computed(() => songStore.duration)
 const title = computed(() => songStore.title)
 const artists = computed(() => songStore.artists)
+
+var load = ref(false)
 
 const song_checked = computed(() => songStore.owner !== null)
 
@@ -22,6 +26,7 @@ const searched_song = reactive({
 })
 
 const searchSong = async () => {
+    load.value = true
     try {
         const searchData = {
             'song_query': searched_song.song,
@@ -41,9 +46,12 @@ const searchSong = async () => {
             songStore.removeSongDetails()
             songStore.setSongDetails(data_det.thumbnail, data_det.owner, data_det.title, data_det.duration, data_det.track_id, data_det.artists)
             searched_song.song = ''
+            load.value = false
         }
+        load.value = false
     } catch(error:any) {
         console.error(error)
+        load.value = false
     }
 }
 
@@ -62,7 +70,9 @@ const getCurrentSong = async () => {
 
 const playlist_song_list = ref([] as Array<[]>)
 var playlist_added = ref(false)
+var playlist_load = ref(false)
 const createPlaylist = async () => {
+    playlist_load.value = true
     try {
         console.log('running create')
         const playlist_data = {
@@ -80,9 +90,12 @@ const createPlaylist = async () => {
             const data = await response.json()
             playlist_song_list.value = data.playlist
             playlist_added.value = true
+            playlist_load.value = false
         }
+        playlist_load.value = false
     } catch (error) {
         console.error(error)
+        playlist_load.value = false
     }
 }
 
@@ -103,10 +116,11 @@ const createPlaylist = async () => {
                         </g>
                     </svg>
                 </div>
-                <input type="text" placeholder="Search" v-model="searched_song.song" @keyup.enter="searchSong">
+                <input type="text" placeholder="Search" v-model="searched_song.song">
             </div>
             <button @click="searchSong" class="grn-btn mobile-btn">
-                <span>Search song</span>
+                <span v-if="load == false">Search song</span>
+                <Load v-if="load == true" />
             </button>
             <!--<button @click="getCurrentSong" class="grn-btn mobile-btn">
                 <span>Use current song</span>
@@ -126,7 +140,8 @@ const createPlaylist = async () => {
                 <span>Create</span>
             </button>
             <button class="grn-btn mobile-btn-hidden" v-if="playlist_added === true">
-                <span>Add to playlist</span>
+                <span v-if="playlist_load == false">Add to playlist</span>
+                <Load v-if="playlist_load == true" />
             </button>
         </div>
         <div class="created-playlist">
